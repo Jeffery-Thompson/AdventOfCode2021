@@ -7,10 +7,6 @@ import numpy as np
 from numpy.lib.shape_base import column_stack
 from scipy import stats
 
-# def split(word):
-#     '''Split a word into letters'''
-    
-#     return(list(word))
 test = np.asarray(['00100', '11110','10110', '10111',
         '10101', '01111', '00111', '11100',
         '10000', '11001', '00010', '01010'], dtype='str')
