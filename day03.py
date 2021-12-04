@@ -4,10 +4,7 @@
 
 # import pandas as pd
 import numpy as np
-from numpy.core.numeric import binary_repr
-from numpy.lib.shape_base import column_stack
 from scipy import stats
-from scipy.stats.stats import ModeResult
 
 test = np.asarray(['00100', '11110','10110', '10111',
         '10101', '01111', '00111', '11100',
