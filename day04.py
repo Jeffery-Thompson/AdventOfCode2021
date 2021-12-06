@@ -68,6 +68,53 @@ def identify_winner(draws, boards):
 
         count += 1
 
+def identify_all_winners(draws, boards):
+    '''Idetifying data for all winning boards  
+    
+        Returns:
+            winners : dict with:
+                draw : int
+                    The winning draw
+                widx : int
+                    The index of the winning board
+            bidx : array
+                The boolean array representing drawn values
+    '''
+
+    bidx = np.zeros(shape = boards.shape, dtype='bool')
+
+    # winner = False,
+    count = 0
+    winners={}
+    # while not winner and count < draws.shape[0]:
+    # while (count < len(draws)) and (boards.shape[0] >= 0):
+    while (0 < len(draws)) :
+        # print('in while...')
+        draw = draws.pop(0)
+
+        idx = np.where(boards == draw)
+        bidx [idx] = True
+
+        if 5 <= count:
+            # print('in if1...')
+            board_status = np.asarray([check_board(bidx[b, :, :]) for b in range(boards.shape[0])])
+            
+            if board_status.any():
+                # winner = True
+                widx =  np.where(board_status==True)[0]
+
+                # winners[str(draw)] = {widx[0]: bidx[widx,:,:][0] }
+                winners[str(draw)] = draw * boards[widx[0],~bidx[widx,:,:][0]].sum()
+
+                boards = np.delete(boards, widx[0], axis = 0)
+                bidx = np.delete(bidx, widx[0], axis = 0 )
+
+                # for w in list(widx):
+                #     if w not in winners.values():
+                #         winners[str(draw)] = w              
+        count += 1
+
+    return (winners)
 
 with open('./data/day04.txt', 'r') as src:
     data = [l for l in (line.strip() for line in src) if l]
@@ -85,5 +132,21 @@ final_score = draw * boards[widx,~bidx].sum()
 print('final score is: {}'.format(final_score))
 
 
+# part 2
+# function identify_all_winners didn't procue
+with open('./data/day04.txt', 'r') as src:
+    data = [l for l in (line.strip() for line in src) if l]
+
+# get draws, then figure out how to deal with board
+draws = list(np.fromstring(data[0],int, sep=','))
+data.pop(0)
+
+boards = [np.fromstring(d, int, sep=' ' ) for d in data]
+boards = np.asarray(boards).ravel().reshape((100, 5,5))
+
+wins =  identify_all_winners(draws, boards)
+
+# last win with non-0 score is draw 75, with score of 2475
+# which is not correct
 
 
